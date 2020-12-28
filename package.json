@@ -1,6 +1,6 @@
 {
   "name": "react-native-monkey-tracker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Monkeys Team ASA Tracker",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -36,13 +36,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/monkeysteam",
+  "repository": "https://github.com/Monkeys-Team/Monkeys-Team-ASA-Tracker",
   "author": "Monkeys Team <anil@monkeysteam.com> (https://www.monkeysteam.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/monkeysteam/issues"
+    "url": "https://github.com/Monkeys-Team/Monkeys-Team-ASA-Tracker"
   },
-  "homepage": "https://github.com/monkeysteam#readme",
+  "homepage": "https://github.com/Monkeys-Team/Monkeys-Team-ASA-Tracker",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
