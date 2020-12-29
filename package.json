@@ -1,6 +1,6 @@
 {
   "name": "react-native-monkey-tracker",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Monkeys Team ASA Tracker",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
