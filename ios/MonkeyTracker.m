@@ -29,7 +29,12 @@ RCT_EXPORT_METHOD(getIDFA:(RCTPromiseResolveBlock)resolve
           NSUUID *identifier = [[ASIdentifierManager sharedManager] advertisingIdentifier];
           if ([[ADClient sharedClient] respondsToSelector:@selector(requestAttributionDetailsWithBlock:)]) {
           [[ADClient sharedClient] requestAttributionDetailsWithBlock:^(NSDictionary *attributionDetails, NSError *error) {
+            if(error == nil) {
               resolve(@{ @"idfa": [identifier UUIDString], @"attribution": attributionDetails, @"permission":@true });
+            }else{
+              NSLOG(@"%@", error);
+              resolve(@{ @"idfa": [identifier UUIDString], @"permission":@true });
+            }
           }];
           }else{
               resolve(@{ @"idfa": [identifier UUIDString], @"permission":@true });
