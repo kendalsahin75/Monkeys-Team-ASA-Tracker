@@ -32,7 +32,7 @@ RCT_EXPORT_METHOD(getIDFA:(RCTPromiseResolveBlock)resolve
             if(error == nil) {
               resolve(@{ @"idfa": [identifier UUIDString], @"attribution": attributionDetails, @"permission":@true });
             }else{
-              NSLOG(@"%@", error);
+              NSLog(@"%@", error);
               resolve(@{ @"idfa": [identifier UUIDString], @"permission":@true });
             }
           }];
