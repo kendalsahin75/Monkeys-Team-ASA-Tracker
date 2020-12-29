@@ -14,7 +14,7 @@ class _MonkeyTracker {
   private APP_USER_ID = null;
 
 
-  init = (APP_KEY: string, appUserId:any ,DEBUG=false) => {
+  init = (APP_KEY: string, appUserId:any, deviceId:string ,DEBUG=false) => {
     return new Promise( async (resolve,reject) => {
       try{
         if(!APP_KEY){
@@ -25,9 +25,14 @@ class _MonkeyTracker {
           this.APP_USER_ID = appUserId
         }
         this.IS_DEBUG = DEBUG;
-        const device_id = await MonkeyTracker.getDeviceId();
+        if(deviceId){
+          this.DEVICE_ID = deviceId;
+        }else{
+          const device_id = await MonkeyTracker.getDeviceId();
+          this.DEVICE_ID = device_id;
+        }
+        
         await this.userIDFA();
-        this.DEVICE_ID = device_id;
         this.APP_KEY = APP_KEY;
         await this.login();
         if(DEBUG){

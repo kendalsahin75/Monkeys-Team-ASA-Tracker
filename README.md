@@ -31,7 +31,8 @@ import  MonkeyTracker  from  "react-native-monkey-tracker";
 // You should call init first.
 // You can get APP_KEY from monkeysteam.com
 
-MonkeyTracker.init(APP_KEY: string,  appUserId:any  ,DEBUG:boolean);
+MonkeyTracker.init(APP_KEY: string, appUserId:any, deviceId:string ,DEBUG:boolean);
+//If device id is null, MT-Tracker will find it self.
 
 // Purchase event for each purchase.
 MonkeyTracker.purchase(receipt: string,  product_id: string,  price: number,  currency: string);
