@@ -16,25 +16,30 @@ class _MonkeyTracker {
 
   init = (APP_KEY: string, appUserId:any ,DEBUG=false) => {
     return new Promise( async (resolve,reject) => {
-      if(!APP_KEY){
-        console.warn("APP_KEY required!");
-        return reject(false);
+      try{
+        if(!APP_KEY){
+          console.warn("APP_KEY required!");
+          return reject(false);
+        }
+        if(appUserId){
+          this.APP_USER_ID = appUserId
+        }
+        this.IS_DEBUG = DEBUG;
+        const device_id = await MonkeyTracker.getDeviceId();
+        await this.userIDFA();
+        this.DEVICE_ID = device_id;
+        this.APP_KEY = APP_KEY;
+        await this.login();
+        if(DEBUG){
+          console.log("Monkeys Team Debug Mode Active");
+          console.log(`App Key Setted -> ${APP_KEY}`);
+          console.log(`Device ID -> ${this.DEVICE_ID}`);
+        }
+        return resolve(true);
+      }catch(e){
+        await this.login();
+        return resolve(false);
       }
-      if(appUserId){
-        this.APP_USER_ID = appUserId
-      }
-      this.IS_DEBUG = DEBUG;
-      const device_id = await MonkeyTracker.getDeviceId();
-      await this.userIDFA();
-      this.DEVICE_ID = device_id;
-      this.APP_KEY = APP_KEY;
-      await this.login();
-      if(DEBUG){
-        console.log("Monkeys Team Debug Mode Active");
-        console.log(`App Key Setted -> ${APP_KEY}`);
-        console.log(`Device ID -> ${this.DEVICE_ID}`);
-      }
-      return resolve(true);
     })
   }
 
