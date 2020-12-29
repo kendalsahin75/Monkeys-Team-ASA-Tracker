@@ -151,6 +151,11 @@ class _MonkeyTracker {
     })
   }
 
+  async getStoreFront(){
+    const resp = await MonkeyTracker.getDeviceCountry();
+    console.log("resp ->",resp);
+  }
+
   private sendSDKRequest = (_url:string,method:Method,data:object) => {
     const url = BASE_URL+_url;
     return Axios({
