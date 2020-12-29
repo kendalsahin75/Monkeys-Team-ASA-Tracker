@@ -1,4 +1,4 @@
-import { Alert, NativeModules } from 'react-native';
+import { NativeModules } from 'react-native';
 import Axios from "axios";
 import type { Method } from "./types";
 
