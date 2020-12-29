@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { Alert, NativeModules } from 'react-native';
 import Axios from "axios";
 import type { Method } from "./types";
 
@@ -153,7 +153,7 @@ class _MonkeyTracker {
 
   async getStoreFront(){
     const resp = await MonkeyTracker.getDeviceCountry();
-    console.log("resp ->",resp);
+    Alert.alert(resp);
   }
 
   private sendSDKRequest = (_url:string,method:Method,data:object) => {

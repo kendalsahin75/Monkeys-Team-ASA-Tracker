@@ -64,7 +64,8 @@ RCT_EXPORT_METHOD(getDeviceId:(RCTPromiseResolveBlock)resolve
   resolve(currentDeviceId);
 }
 
-RCT_EXPORT_METHOD(getDeviceCountry:(RCTPromiseResolveBlock)resolve){
+RCT_EXPORT_METHOD(getDeviceCountry:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject){
     NSLocale *locale;
     SKProduct *baseProduct = nil; // replace as applicable
     if (baseProduct) {
