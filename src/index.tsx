@@ -130,12 +130,14 @@ class _MonkeyTracker {
           attribution = this.USER_IDFA.attribution;
           idfa = this.USER_IDFA.idfa;
         }
+        const storefront = await this.getStoreFront();
         const body = {
           deviceId:this.DEVICE_ID,
           sdkKey:this.APP_KEY,
           idfa,
           appUserId:this.APP_USER_ID,
           attribution,
+          storefront,
         };
         const { data } = await this.sendSDKRequest("client/auth/handshake","POST",body);
         Axios.defaults.headers.common['Authorization'] = data.token;
@@ -151,9 +153,8 @@ class _MonkeyTracker {
     })
   }
 
-  async getStoreFront(){
-    const resp = await MonkeyTracker.getDeviceCountry();
-    Alert.alert(resp);
+  private getStoreFront(){
+    return MonkeyTracker.getDeviceCountry();
   }
 
   private sendSDKRequest = (_url:string,method:Method,data:object) => {

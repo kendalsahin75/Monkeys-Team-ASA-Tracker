@@ -6,12 +6,12 @@ import MonkeyTracker from 'react-native-monkey-tracker';
 export default function App() {
   
   MonkeyTracker.init("MONKEY-TRACKER-ydsfqcykiyhty3r", 123, true).then(() => {})
-  MonkeyTracker.getStoreFront();
+  // MonkeyTracker.getStoreFront();
 
   return (
     <View style={styles.container}>
       <Text>Result:</Text>
-      <TouchableOpacity onPress={ () => { MonkeyTracker.purchase("receipt","prodcut_id",3.1,"USD") }}>
+      <TouchableOpacity onPress={ () => { MonkeyTracker.sendEvent("test_event",{ping:"pong"}) }}>
         <Text>
           Click
         </Text>
