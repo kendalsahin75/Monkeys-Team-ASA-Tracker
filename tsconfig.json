@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "react-native-monkey-tracker": ["./src/index"]
+      "react-native-monkey-tracker": ["src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

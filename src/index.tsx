@@ -1,10 +1,14 @@
+
 import { NativeModules } from 'react-native';
 import Axios from "axios";
 import type { Method } from "./types";
+import AdStore from "./index/AdStore";
+import Clipboard from '@react-native-community/clipboard';
 
-const { MonkeyTracker } = NativeModules;
+const Native_MonkeyTracker = NativeModules.MonkeyTracker;
 
 const BASE_URL = `https://tracker.monkeysteam.com/`;
+
 class _MonkeyTracker {
   private APP_KEY = "";
   private USER_IDFA = {idfa:"not_registered_yet", attribution:false};
@@ -12,6 +16,9 @@ class _MonkeyTracker {
   private IS_DEBUG = false;
   // private API_USER = {};
   private APP_USER_ID = null;
+  private REWARDED_AD = null;
+  private INTERSTITIAL = null;
+  private BANNER = null;
 
 
   init = (APP_KEY: string, appUserId:any, deviceId:string ,DEBUG=false) => {
@@ -28,11 +35,11 @@ class _MonkeyTracker {
         if(deviceId){
           this.DEVICE_ID = deviceId;
         }else{
-          const device_id = await MonkeyTracker.getDeviceId();
+          const device_id = await Native_MonkeyTracker.getDeviceId();
           this.DEVICE_ID = device_id;
         }
         
-        await this.userIDFA();
+        // await this.userIDFA();
         this.APP_KEY = APP_KEY;
         await this.login();
         if(DEBUG){
@@ -51,7 +58,7 @@ class _MonkeyTracker {
   userIDFA = (try_count=1) => {
     return new Promise( async (resolve,reject) => {
       try{
-        const userIDFA = await MonkeyTracker.getIDFA();
+        const userIDFA = await Native_MonkeyTracker.getIDFA();
         if(this.IS_DEBUG){
           console.log(`User IDFA Info`);
           console.log(userIDFA);
@@ -76,6 +83,7 @@ class _MonkeyTracker {
                   const resp = await this.userIDFA(_try_count);
                   if(resp){
                     resolve(true);
+                    await this.login()
                   }else{
                     resolve(false);
                   }
@@ -91,6 +99,7 @@ class _MonkeyTracker {
             }
           }else{
             this.USER_IDFA = userIDFA;
+            await this.login()
             resolve(true);
           }
         }
@@ -108,6 +117,53 @@ class _MonkeyTracker {
       price,
       currency
     });
+  }
+
+  getRewardedAds = async () => {
+    try{
+      const {data} = await this.sendSDKRequest("client/ads","POST",{
+        adType:"REWARDED"
+      });
+      if(data.done){
+        const {ad} = data;
+        console.log(ad);
+        AdStore.setRewarded(ad);
+        // _setRewarded(ad);
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+
+  getInterstitial = async () => {
+    try{
+      const {data} = await this.sendSDKRequest("client/ads","POST",{
+        adType:"INTERSTITIAL"
+      });
+      console.log(data);
+      if(data.done){
+        const {ad} = data;
+        AdStore.setInterstitial(ad);
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+
+  getBannerAds = async () => {
+    return new Promise( async (resolve,reject) => {
+      try{
+        const {data} = await this.sendSDKRequest("client/ads","POST",{
+          adType:"BANNER"
+        });
+        if(data.done){
+          const {ad} = data;
+          resolve(ad);
+        }
+      }catch(e){
+        reject(e);
+      }
+    })
   }
 
   sendEvent = async (event_name: string, properties: object) => {
@@ -146,9 +202,24 @@ class _MonkeyTracker {
         };
         const { data } = await this.sendSDKRequest("client/auth/handshake","POST",body);
         Axios.defaults.headers.common['Authorization'] = data.token;
+        AdStore.setUserId(data.user.id);
+        AdStore.setSendEvent(this.sendSDKRequest);
         if(this.IS_DEBUG){
+          console.log(data);
           console.log("User Token Setted");
           console.log(data.token);
+        }
+
+        if(!data.firstOpen){
+          const has_url = await Clipboard.hasURL();
+          if(has_url){
+            const url = await Clipboard.getString();
+            if(url.startsWith(data.baseUrl)){
+              await this.sendSDKRequest("client/ads/conversion","POST",{
+                url      
+              });
+            }
+          }
         }
         // this.API_USER = data.user;
         resolve(true);
@@ -159,19 +230,19 @@ class _MonkeyTracker {
   }
 
   private getStoreFront(){
-    return MonkeyTracker.getDeviceCountry();
+    return Native_MonkeyTracker.getDeviceCountry();
   }
 
-  private sendSDKRequest = (_url:string,method:Method,data:object) => {
+  private sendSDKRequest = (_url:string,method:Method,data:object,headers:object={}) => {
     const url = BASE_URL+_url;
+    console.log("REQUEST",_url);
     return Axios({
       baseURL:url,
       method,
-      data
+      data,
+      headers
     })
   }
 }
 
-
-const monkeyTracker = new _MonkeyTracker();
-export default monkeyTracker;
+export const MonkeyTracker = new _MonkeyTracker();

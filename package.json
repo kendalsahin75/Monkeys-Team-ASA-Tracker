@@ -1,6 +1,6 @@
 {
   "name": "react-native-monkey-tracker",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Monkeys Team ASA Tracker",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -145,6 +145,11 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.21.0"
+    "@react-native-community/clipboard": "^1.5.1",
+    "axios": "^0.21.0",
+    "mobx": "^6.3.2",
+    "mobx-react": "^7.2.0",
+    "react-native-localization": "^2.1.7",
+    "react-native-video": "^5.1.1"
   }
 }
