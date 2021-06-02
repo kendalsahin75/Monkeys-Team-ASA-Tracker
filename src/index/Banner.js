@@ -4,7 +4,6 @@ import Video from 'react-native-video';
 import { strings } from "../localization";
 import Clipboard from '@react-native-community/clipboard';
 
-import { observer } from "mobx-react"
 import {MonkeyTracker} from "../index";
 
 import AdStore from "./AdStore";

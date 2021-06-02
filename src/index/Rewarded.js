@@ -4,7 +4,7 @@ import Video from 'react-native-video';
 import { strings } from "../localization";
 import Clipboard from '@react-native-community/clipboard';
 
-import { observer } from "mobx-react"
+import { observer } from 'mobx-react/native';
 
 import AdStore from "./AdStore";
 

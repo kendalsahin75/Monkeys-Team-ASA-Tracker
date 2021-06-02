@@ -1,54 +1,50 @@
 import * as React from 'react';
 
-import { makeAutoObservable } from "mobx"
+import { observable, action } from 'mobx';
 import { Banner } from "./Banner";
 
 class AdStore {
 
-  rewardeds = [];
-  rewarded = null;
+  @observable rewardeds = [];
+  @observable rewarded = null;
 
-  interstitials = [];
-  interstitial = null;
+  @observable interstitials = [];
+  @observable interstitial = null;
 
-  userId = null;
+  @observable userId = null;
 
-  sendEvent = null;
+  @observable sendEvent = null;
 
-  constructor() {
-    makeAutoObservable(this)
-  }
-
-  setSendEvent(sendEvent){
+  @action setSendEvent(sendEvent){
     this.sendEvent = sendEvent;
   }
 
-  setUserId(userId){
+  @action setUserId(userId){
     this.userId = userId;
   }
 
-  setRewarded = async (rewarded) => {
+  @action setRewarded = async (rewarded) => {
     this.rewardeds.push(rewarded);
   }
 
-  closeRewarded = () => {
+  @action closeRewarded = () => {
     this.rewarded = null;
   }
 
-  setInterstitial(interstitial) {
+  @action setInterstitial(interstitial) {
     this.interstitials.push(interstitial);
   }
 
-  setShowInterstitial(){
+  @action setShowInterstitial(){
     this.interstitial = this.interstitials.shift();
     this.sendEvent("client/ads/events/view","POST",{id:this.interstitial.id}).then(() => {});
   }
 
-  closeInterstitial(){
+  @action closeInterstitial(){
     this.interstitial = null;
   }
 
-  setShowRewarded(){
+  @action setShowRewarded(){
     this.rewarded = this.rewardeds.shift();
     this.sendEvent("client/ads/events/view","POST",{id:this.rewarded.id}).then(() => {});
   }
