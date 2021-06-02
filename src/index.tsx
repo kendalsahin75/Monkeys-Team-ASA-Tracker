@@ -5,6 +5,7 @@ import type { Method } from "./types";
 import AdStore from "./index/AdStore";
 import Clipboard from '@react-native-community/clipboard';
 import { Rewarded, ShowRewarded } from  "./index/Rewarded";
+import { Intersettial, ShowIntersettial } from  "./index/Intersettial";
 const Native_MonkeyTracker = NativeModules.MonkeyTracker;
 
 const BASE_URL = `https://tracker.monkeysteam.com/`;
@@ -247,5 +248,5 @@ class _MonkeyTracker {
   }
 }
 
-export const MonkeyTracker = new _MonkeyTracker();
-export const RewardedAdContainer = { Rewarded, ShowRewarded };
+const MTracker = new _MonkeyTracker()
+export const MonkeyTracker = {MTracker ,Rewarded, ShowRewarded, Intersettial, ShowIntersettial};
