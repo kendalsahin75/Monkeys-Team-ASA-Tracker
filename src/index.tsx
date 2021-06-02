@@ -2,7 +2,7 @@
 import { NativeModules } from 'react-native';
 import Axios from "axios";
 import type { Method } from "./types";
-import AdStore from "./index/AdStore";
+import AdStore from "./AdStore";
 import Clipboard from '@react-native-community/clipboard';
 
 const Native_MonkeyTracker = NativeModules.MonkeyTracker;
