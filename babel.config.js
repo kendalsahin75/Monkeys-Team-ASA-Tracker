@@ -6,6 +6,8 @@ module.exports = {
       {
         legacy: true
       }
-    ]
+    ],
+    'decorators-legacy', 
+    'decorators'
   ]
 };
