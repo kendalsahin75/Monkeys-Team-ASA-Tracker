@@ -6,6 +6,7 @@ module.exports = {
       {
         legacy: true
       }
-    ]
+    ],
+    ["transform-decorators-legacy"]
   ]
 };
