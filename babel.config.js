@@ -5,8 +5,13 @@ module.exports = {
       "@babel/plugin-proposal-decorators",
       {
         legacy: true,
-        decoratorsBeforeExport: true
       }
     ],
+    [
+      "@babel/plugin-proposal-class-properties", 
+      { 
+        "loose": false 
+      }
+    ]
   ]
 };
