@@ -5,46 +5,46 @@ import { Banner } from "./Banner";
 
 class AdStore {
 
-  @observable rewardeds = [];
-  @observable rewarded = null;
+  rewardeds = [];
+  rewarded = null;
 
-  @observable interstitials = [];
-  @observable interstitial = null;
+  interstitials = [];
+  interstitial = null;
 
-  @observable userId = null;
+  userId = null;
 
-  @observable sendEvent = null;
+  sendEvent = null;
 
-  @action setSendEvent(sendEvent){
+  setSendEvent(sendEvent){
     this.sendEvent = sendEvent;
   }
 
-  @action setUserId(userId){
+  setUserId(userId){
     this.userId = userId;
   }
 
-  @action setRewarded = async (rewarded) => {
+  setRewarded = async (rewarded) => {
     this.rewardeds.push(rewarded);
   }
 
-  @action closeRewarded = () => {
+  closeRewarded = () => {
     this.rewarded = null;
   }
 
-  @action setInterstitial(interstitial) {
+  setInterstitial(interstitial) {
     this.interstitials.push(interstitial);
   }
 
-  @action setShowInterstitial(){
+  setShowInterstitial(){
     this.interstitial = this.interstitials.shift();
     this.sendEvent("client/ads/events/view","POST",{id:this.interstitial.id}).then(() => {});
   }
 
-  @action closeInterstitial(){
+  closeInterstitial(){
     this.interstitial = null;
   }
 
-  @action setShowRewarded(){
+  setShowRewarded(){
     this.rewarded = this.rewardeds.shift();
     this.sendEvent("client/ads/events/view","POST",{id:this.rewarded.id}).then(() => {});
   }
