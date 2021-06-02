@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { observable, action } from 'mobx';
+import { observable, action, decorate } from 'mobx';
 import { Banner } from "./Banner";
 
 class AdStore {
@@ -53,3 +53,20 @@ class AdStore {
 
 const adStore = new AdStore();
 export default adStore;
+
+decorate(AdStore,{
+  rewarded: observable,
+  rewardeds: observable,
+  interstitial: observable,
+  interstitials: observable,
+  userId: observable,
+  sendEvent: observable,
+  setSendEvent: action,
+  setUserId: action,
+  setRewarded: action,
+  closeRewarded: action,
+  setInterstitial: action,
+  setShowInterstitial: action,
+  closeInterstitial: action,
+  setShowRewarded: action
+})
