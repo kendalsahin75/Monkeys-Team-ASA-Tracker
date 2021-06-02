@@ -186,7 +186,9 @@ class _MonkeyTracker {
   private login = () => {
     return new Promise(async (resolve) => {
       try{
-        let attribution = null, idfa = null;
+        //let attribution = null, idfa = null;
+        let attribution = false
+        let idfa = "not registered yet"
         if(this.USER_IDFA){
           attribution = this.USER_IDFA.attribution;
           idfa = this.USER_IDFA.idfa;
