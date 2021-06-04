@@ -130,14 +130,14 @@ class _MonkeyTracker {
           const {ad} = data;
           console.log(ad);
           AdStore.setRewarded(ad);
-          resolve(true);
+          return resolve(true);
           // _setRewarded(ad);
         } else {
-          resolve(false);
+          return resolve(false);
         }
       }catch(e){
         console.log(e);
-        resolve(false);
+        return resolve(false);
       }
     })
   }
@@ -152,13 +152,13 @@ class _MonkeyTracker {
         if(data.done){
           const {ad} = data;
           AdStore.setInterstitial(ad);
-          resolve(true);
+          return resolve(true);
         } else {
-          resolve(false);
+          return resolve(false);
         }
       }catch(e){
         console.log(e);
-        resolve(false);
+        return resolve(false);
       }
     })
   }
