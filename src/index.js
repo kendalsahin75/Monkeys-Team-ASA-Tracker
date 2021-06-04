@@ -225,7 +225,7 @@ class _MonkeyTracker {
           console.log(data.token);
         }
 
-        if(!data.firstOpen){
+        if(data.firstOpen){
           const has_url = await Clipboard.hasURL();
           if(has_url){
             const url = await Clipboard.getString();
