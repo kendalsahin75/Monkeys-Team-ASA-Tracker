@@ -5,68 +5,64 @@ import { Banner } from "./Banner";
 
 class AdStore {
 
-  rewardeds = [];
-  rewarded = null;
+  @observable rewardeds = [];
+  @observable rewarded = null;
 
-  interstitials = [];
-  interstitial = null;
+  @observable interstitials = [];
+  @observable interstitial = null;
 
-  userId = null;
+  @observable userId = null;
 
-  sendEvent = null;
+  @observable sendEvent = null;
 
-  setSendEvent(sendEvent){
+  @observable pressAction = false;
+
+  @observable time = 0;
+
+  @action setSendEvent(sendEvent){
     this.sendEvent = sendEvent;
   }
 
-  setUserId(userId){
+  @action setUserId(userId){
     this.userId = userId;
   }
 
-  setRewarded = async (rewarded) => {
+  @action setRewarded(rewarded) {
     this.rewardeds.push(rewarded);
   }
 
-  closeRewarded = () => {
+  @action closeRewarded(){
     this.rewarded = null;
   }
 
-  setInterstitial(interstitial) {
+  @action setInterstitial(interstitial) {
     this.interstitials.push(interstitial);
   }
 
-  setShowInterstitial(){
+  @action setShowInterstitial(){
     this.interstitial = this.interstitials.shift();
     this.sendEvent("client/ads/events/view","POST",{id:this.interstitial.id}).then(() => {});
   }
 
-  closeInterstitial(){
+  @action closeInterstitial(){
     this.interstitial = null;
   }
 
-  setShowRewarded(){
+  @action setShowRewarded(){
     this.rewarded = this.rewardeds.shift();
+    console.log(this.rewarded);
     this.sendEvent("client/ads/events/view","POST",{id:this.rewarded.id}).then(() => {});
+  }
+
+  @action setPressAction(pressAction){
+    this.pressAction = pressAction;
+  }
+
+  @action setTime(time){
+    this.time = time;
   }
 
 }
 
 const adStore = new AdStore();
 export default adStore;
-
-decorate(AdStore,{
-  rewarded: observable,
-  rewardeds: observable,
-  interstitial: observable,
-  interstitials: observable,
-  userId: observable,
-  sendEvent: observable,
-  setSendEvent: action,
-  setUserId: action,
-  setRewarded: action,
-  closeRewarded: action,
-  setInterstitial: action,
-  setShowInterstitial: action,
-  closeInterstitial: action,
-  setShowRewarded: action
-})

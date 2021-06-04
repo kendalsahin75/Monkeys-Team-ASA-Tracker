@@ -1,15 +1,14 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
-import { MonkeyTracker } from 'react-native-monkey-tracker';
-import { Rewarded, ShowRewarded } from "react-native-monkey-tracker/Rewarded.js"
-import { Banner } from "react-native-monkey-tracker/Banner.js"
-import { Intersettial, ShowIntersettial } from "react-native-monkey-tracker/Intersettial.js"
+import { MonkeyTracker, TostRewarded, TostIntersettial, TostBanner } from 'react-native-monkey-tracker';
+const { Rewarded, ShowRewarded } = TostRewarded;
+const { Intersettial, ShowIntersettial } = TostIntersettial;
 
 export default function App() {
   
   MonkeyTracker.init("MONKEY-TRACKER-ydsf2hs1kmomn671", 123, "", true).then( async () => {
-    await MonkeyTracker.getRewardedAds()
+    // await MonkeyTracker.getRewardedAds()
     await MonkeyTracker.getInterstitial();
   })
 
@@ -19,7 +18,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>Result:</Text>
       <TouchableOpacity onPress={ async () => { 
-        await ShowRewarded();
+        await ShowIntersettial();
        }}>
         <Text>
           Click

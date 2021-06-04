@@ -1,7 +1,7 @@
 
 import { NativeModules } from 'react-native';
 import Axios from "axios";
-import type { Method } from "./types";
+import { Method } from "./types";
 import AdStore from "./index/AdStore";
 import Clipboard from '@react-native-community/clipboard';
 import { Rewarded, ShowRewarded } from  "./index/Rewarded";
@@ -11,18 +11,18 @@ const Native_MonkeyTracker = NativeModules.MonkeyTracker;
 const BASE_URL = `https://tracker.monkeysteam.com/`;
 
 class _MonkeyTracker {
-  private APP_KEY = "";
-  private USER_IDFA = {idfa:"not_registered_yet", attribution:false};
-  private DEVICE_ID = "";
-  private IS_DEBUG = false;
-  // private API_USER = {};
-  private APP_USER_ID = null;
-  private REWARDED_AD = null;
-  private INTERSTITIAL = null;
-  private BANNER = null;
+  APP_KEY = "";
+  USER_IDFA = {idfa:"not_registered_yet", attribution:false};
+  DEVICE_ID = "";
+  IS_DEBUG = false;
+  // API_USER = {};
+  APP_USER_ID = null;
+  REWARDED_AD = null;
+  INTERSTITIAL = null;
+  BANNER = null;
 
 
-  init = (APP_KEY: string, appUserId:any, deviceId:string ,DEBUG=false) => {
+  init = (APP_KEY, appUserId, deviceId ,DEBUG=false) => {
     return new Promise( async (resolve,reject) => {
       try{
         if(!APP_KEY){
@@ -111,7 +111,7 @@ class _MonkeyTracker {
     })
   }
 
-  purchase = async (receipt: string, product_id: string, price: number, currency: string) => {
+  purchase = async (receipt, product_id, price, currency) => {
     await this.sendSDKRequest("client/event/trackPurchase","POST",{
       receipt,
       product_id,
@@ -167,7 +167,7 @@ class _MonkeyTracker {
     })
   }
 
-  sendEvent = async (event_name: string, properties: object) => {
+  sendEvent = async (event_name, properties) => {
     if(!this.APP_KEY) {
       console.warn("INIT must be call before send event");
       return false;
@@ -184,7 +184,7 @@ class _MonkeyTracker {
     return true;
   }
 
-  private login = () => {
+  login = () => {
     return new Promise(async (resolve) => {
       try{
         //let attribution = null, idfa = null;
@@ -232,11 +232,11 @@ class _MonkeyTracker {
     })
   }
 
-  private getStoreFront(){
+  getStoreFront(){
     return Native_MonkeyTracker.getDeviceCountry();
   }
 
-  private sendSDKRequest = (_url:string,method:Method,data:object,headers:object={}) => {
+  sendSDKRequest = (_url,method,data,headers={}) => {
     const url = BASE_URL+_url;
     console.log("REQUEST",_url);
     return Axios({
@@ -249,4 +249,6 @@ class _MonkeyTracker {
 }
 
 const MTracker = new _MonkeyTracker()
-export const MonkeyTracker = {MTracker ,Rewarded, ShowRewarded, Intersettial, ShowIntersettial};
+export const MonkeyTracker =  MTracker;
+export const TostRewarded = {Rewarded, ShowRewarded}
+export const TostIntersettial = {Intersettial, ShowIntersettial}
