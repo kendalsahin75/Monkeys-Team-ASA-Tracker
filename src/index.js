@@ -121,34 +121,46 @@ class _MonkeyTracker {
   }
 
   getRewardedAds = async () => {
-    try{
-      const {data} = await this.sendSDKRequest("client/ads","POST",{
-        adType:"REWARDED"
-      });
-      if(data.done){
-        const {ad} = data;
-        console.log(ad);
-        AdStore.setRewarded(ad);
-        // _setRewarded(ad);
+    return new Promise(async(resolve) => {
+      try{
+        const {data} = await this.sendSDKRequest("client/ads","POST",{
+          adType:"REWARDED"
+        });
+        if(data.done){
+          const {ad} = data;
+          console.log(ad);
+          AdStore.setRewarded(ad);
+          resolve(true);
+          // _setRewarded(ad);
+        } else {
+          resolve(false);
+        }
+      }catch(e){
+        console.log(e);
+        resolve(false);
       }
-    }catch(e){
-      console.log(e);
-    }
+    })
   }
 
   getInterstitial = async () => {
-    try{
-      const {data} = await this.sendSDKRequest("client/ads","POST",{
-        adType:"INTERSTITIAL"
-      });
-      console.log(data);
-      if(data.done){
-        const {ad} = data;
-        AdStore.setInterstitial(ad);
+    return new Promise(async(resolve) => { 
+      try{
+        const {data} = await this.sendSDKRequest("client/ads","POST",{
+          adType:"INTERSTITIAL"
+        });
+        console.log(data);
+        if(data.done){
+          const {ad} = data;
+          AdStore.setInterstitial(ad);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }catch(e){
+        console.log(e);
+        resolve(false);
       }
-    }catch(e){
-      console.log(e);
-    }
+    })
   }
 
   getBannerAds = async () => {
