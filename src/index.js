@@ -230,7 +230,7 @@ class _MonkeyTracker {
           if(has_url){
             const url = await Clipboard.getString();
             if(url.startsWith(data.baseUrl)){
-              await this.sendSDKRequest("client/ads/conversion","POST",{
+              await this.sendSDKRequest("client/ads/events/conversion","POST",{
                 url      
               });
             }
