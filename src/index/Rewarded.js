@@ -43,55 +43,52 @@ const CloseButton = ({ closePress, pressAction, time }) => {
   )
 }
 
-@observer
-export class Rewarded extends React.Component {
-  render(){
-    console.log("Rewarded,",this);
-    const { style, adClose, reward } = this.props;
-    const { rewarded, userId, time, pressAction } = AdStore;
-    if (rewarded) {
-      return (
-        <TouchableOpacity activeOpacity={0.9} onPress={ async () => {
-          await AdStore.sendEvent("client/ads/events/click","POST",{id:rewarded.id});
-          Clipboard.setString(rewarded.targetUrl+"?userId="+userId);
-          Linking.openURL(rewarded.targetUrl).catch((err) =>{});
-        }} style={[styles.container, style]}>
-          <Video key={"rewarded"} source={{ uri: rewarded.contentUrl }}
-            onError={(error) => {
-              console.log("onError", error)
-            }}               // Callback when video cannot be loaded
-            resizeMode="contain"
-            onEnd={ async () => {
-              AdStore.setPressAction(true);
-              await AdStore.sendEvent("client/ads/events/reward","POST",{id:rewarded.id});
-              reward();
-            }}
-            onProgress={({ seekableDuration, currentTime }) => {
-              const _time = (seekableDuration - currentTime).toFixed(0)
-              AdStore.setTime(_time);
-            }}
-            style={styles.video} />
-          <CloseButton pressAction={pressAction} closePress={ async () => {
-            await AdStore.sendEvent("client/ads/events/close","POST",{id:rewarded.id});
-            AdStore.closeRewarded();
-            if (!pressAction) {
-              adClose();
-            }
-            AdStore.setPressAction(false);
-          }} />
-          <View style={styles.closeTimeContainer}>
-            <Text style={styles.closeTime}>
-              {time}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )
+export const Rewarded = observer(({ style, adClose, reward }) => {
+  const [pressAction, setPressAction] = useState(false)
+  const [time, setTime] = useState(0)
+  const { rewarded, userId } = AdStore;
+  if (rewarded) {
+    return (
+      <TouchableOpacity activeOpacity={0.9} onPress={ async () => {
+        await AdStore.sendEvent("client/ads/events/click","POST",{id:rewarded.id});
+        Clipboard.setString(rewarded.targetUrl+"?userId="+userId);
+        Linking.openURL(rewarded.targetUrl).catch((err) =>{});
+      }} style={[styles.container, style]}>
+        <Video key={"rewarded"} source={{ uri: rewarded.contentUrl }}
+          onError={(error) => {
+            console.log("onError", error)
+          }}               // Callback when video cannot be loaded
+          resizeMode="contain"
+          onEnd={ async () => {
+            setPressAction(true);
+            await AdStore.sendEvent("client/ads/events/reward","POST",{id:rewarded.id});
+            reward();
+          }}
+          onProgress={({ seekableDuration, currentTime }) => {
+            const _time = (seekableDuration - currentTime).toFixed(0)
+            setTime(_time);
+          }}
+          style={styles.video} />
+        <CloseButton pressAction={pressAction} closePress={ async () => {
+          await AdStore.sendEvent("client/ads/events/close","POST",{id:rewarded.id});
+          AdStore.closeRewarded();
+          if (!pressAction) {
+            adClose();
+          }
+          setPressAction(false);
+        }} />
+        <View style={styles.closeTimeContainer}>
+          <Text style={styles.closeTime}>
+            {time}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    )
 
-    } else {
-      return null;
-    }
+  } else {
+    return null;
   }
-}
+})
 
 
 const styles = StyleSheet.create({

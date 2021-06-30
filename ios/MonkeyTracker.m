@@ -64,6 +64,17 @@ RCT_EXPORT_METHOD(getDeviceId:(RCTPromiseResolveBlock)resolve
   resolve(currentDeviceId);
 }
 
+RCT_EXPORT_METHOD(getAppVersion:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject){
+  NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+  resolve(version);
+}
+
+RCT_EXPORT_METHOD(getOSVersion:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+  UIDevice *currentDevice = [UIDevice currentDevice];
+resolve(currentDevice.systemVersion);
+}
+
 RCT_EXPORT_METHOD(getDeviceCountry:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject){
     NSLocale *locale;
@@ -75,6 +86,22 @@ RCT_EXPORT_METHOD(getDeviceCountry:(RCTPromiseResolveBlock)resolve
     }
     NSString *countryCode = [locale objectForKey:NSLocaleCountryCode];
     resolve(countryCode);
+}
+
+RCT_EXPORT_METHOD(isTestFlight:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+NSString *receiptURLString = [receiptURL path];
+BOOL isRunningTestFlightBeta =  ([receiptURLString rangeOfString:@"sandboxReceipt"].location != NSNotFound);
+resolve(@{ @"isTestFlight": @(isRunningTestFlightBeta) });
+}
+
+RCT_EXPORT_METHOD(getTrackingStatus:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+  ATTrackingManagerAuthorizationStatus status = [ATTrackingManager trackingAuthorizationStatus];
+  resolve(@{ @"trackingStatus": @(status) });
 }
 
 @end

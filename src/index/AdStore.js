@@ -62,6 +62,14 @@ class AdStore {
     this.time = time;
   }
 
+  @action setPressAction(pressAction){
+    this.pressAction = pressAction;
+  }
+
+  @action setTime(time){
+    this.time = time;
+  }
+  
 }
 
 const adStore = new AdStore();
