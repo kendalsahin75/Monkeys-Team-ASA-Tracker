@@ -151,7 +151,7 @@
   "dependencies": {
     "@react-native-community/clipboard": "^1.5.1",
     "axios": "^0.21.0",
-    "react-native-localization": "^2.1.6",
+    "react-native-localization": "2.1.6",
     "react-native-video": "^5.1.1"
   }
 }
